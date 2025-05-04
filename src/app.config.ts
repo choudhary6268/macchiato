@@ -5,12 +5,41 @@ import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScroll
 import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { appRoutes } from './app.routes';
+import { definePreset } from '@primeng/themes';
+
+const MyPreset = definePreset(Aura, {
+    components: {
+        button: {
+            colorScheme: {
+                light: {
+                    root: {
+                        background: '{purple.700}',
+                        color: '{surface.700}'
+                    },
+                    subtitle: {
+                        color: '{surface.500}'
+                    }
+                },
+                dark: {
+                    root: {
+                        background: '{purple.700}',
+                        color: '{surface.0}'
+                    },
+                    subtitle: {
+                        color: '{surface.400}'
+                    }
+                }
+            }
+        }
+    }
+});
+
 
 export const appConfig: ApplicationConfig = {
     providers: [
         provideRouter(appRoutes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' }), withEnabledBlockingInitialNavigation()),
         provideHttpClient(withFetch()),
         provideAnimationsAsync(),
-        providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: '.app-dark' } } })
+        providePrimeNG({ theme: { preset: MyPreset, options: { darkModeSelector: '.app-dark' } } })
     ]
 };

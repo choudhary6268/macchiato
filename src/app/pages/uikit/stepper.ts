@@ -40,8 +40,8 @@ import { TagModule } from 'primeng/tag';
                                                 <td>{{ product.quantity }}</td>
                                                 <td>
                                                     <span class="flex justify-content-between">
-                                                        <p-button label="Edit" />
-                                                        <p-button class="ml-2" label="Delete" />
+                                                        <p-button icon="pi pi-pencil" aria-label="Edit" label="Edit"/>
+                                                        <p-button class="ml-2" icon="pi pi-trash" aria-label="Delete" label="Delete"/>
                                                     </span>
                                                 </td>
                                             </tr>
@@ -62,8 +62,8 @@ import { TagModule } from 'primeng/tag';
                                                 <td>{{ product.quantity }}</td>
                                                 <td>
                                                     <span class="flex justify-content-between">
-                                                        <p-button label="Edit" />
-                                                        <p-button class="ml-2" label="Delete" />
+                                                    <p-button icon="pi pi-pencil" aria-label="Edit" label="Edit"/>
+                                                    <p-button class="ml-2" icon="pi pi-trash" aria-label="Delete" label="Delete"/>
                                                     </span>
                                                 </td>
                                             </tr>
@@ -84,8 +84,8 @@ import { TagModule } from 'primeng/tag';
                                                 <td>{{ product.quantity }}</td>
                                                 <td>
                                                     <span class="flex justify-content-between">
-                                                        <p-button label="Edit" />
-                                                        <p-button class="ml-2" label="Delete" />
+                                                        <p-button icon="pi pi-pencil" aria-label="Edit" label="Edit"/>
+                                                        <p-button class="ml-2" icon="pi pi-trash" aria-label="Delete" label="Delete"/>
                                                     </span>
                                                 </td>
                                             </tr>

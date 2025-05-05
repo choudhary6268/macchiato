@@ -5,31 +5,62 @@ import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScroll
 import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { appRoutes } from './app.routes';
-import { definePreset } from '@primeng/themes';
+import { definePreset, dt } from '@primeng/themes';
 
-const MyPreset = definePreset(Aura, {
+export const MyPreset = definePreset(Aura, {
+    primitive: {
+      neutral: {
+        black: '#D9D8D6',
+        darkgray: '#D9D8D6',
+        gray: '#D9D8D6',
+        darkblue: '#004D71',
+        abc: 'rgba(0, 130, 202, 0.1)',
+        lightgray: '#D9D8D6',
+        white: '#fff',
+      },
+      blue: {
+        dark: '#004D71',
+        regular: '#0082CA',
+        light: '#54C0E8',
+      }
+    },
+    semantic: {
+      primary: {
+        500: '{neutral.darkblue}',
+      },
+      secondary: {
+        500: '{neutral.lightgray}',
+      }
+    },
     components: {
-        button: {
-            colorScheme: {
-                light: {
-                    root: {
-                        background: '{purple.700}',
-                        color: '{surface.700}'
-                    },
-                    subtitle: {
-                        color: '{surface.500}'
-                    }
-                },
-                dark: {
-                    root: {
-                        background: '{purple.700}',
-                        color: '{surface.0}'
-                    },
-                    subtitle: {
-                        color: '{surface.400}'
-                    }
+      content: {
+        border: {
+          radius: 0
+        }
+      },
+      paginator: {
+        padding: '1rem',
+        borderRadius: 0,
+        extend: {
+            border: '1px solid {neutral.lightgray}',
+            },
+            css: () => `
+                .p-paginator-border {
+                border: ${dt('paginator.border')};
+                }
+            `,
+            nav: {
+            button: {
+                selected: {
+                background: '{neutral.darkblue}',
+                hover: '{neutral.darkblue}',
+                color: '{neutral.white}'
                 }
             }
+            }
+        },
+        button: {
+
         }
     }
 });

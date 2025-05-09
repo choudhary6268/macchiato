@@ -52,33 +52,38 @@ import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Va
                         <i class="pi pi-users text-cyan-500 !text-xl"></i>
                     </div>
                     <p-popover #filterPopover>
-                        <div class="flex flex-col gap-4 w-[40rem]" [formGroup]="filterForm">
+                        <div class="flex flex-col gap-4 w-[42rem]" [formGroup]="filterForm">
                             <div>
                                 <span class="font-medium text-surface-900 dark:text-surface-0 block mb-2">Filter by Property</span>
                             </div>
                             <form formArrayName="items">
-                                <!-- <span class="font-medium text-surface-900 dark:text-surface-0 block mb-2">Team Members</span> -->
+                                @if(items.controls.length) {
                                 <ul class="list-none p-0 m-0 flex flex-col gap-4">
                                     @for(filter of items.controls; track filter; let i = $index;) {
                                     <li class="flex items-center gap-1 justify-content" [formGroupName]="i">
-                                        <div>
-                                            <p-select [options]="propertyTypes" [checkmark]="true" optionLabel="name" [showClear]="true" placeholder="Select Property"/>
+                                        <div class="w-[12rem]">
+                                            <p-select class="w-[11rem]" [options]="propertyTypes" [checkmark]="true" optionLabel="name" [showClear]="true" placeholder="Select Property"/>
                                         </div>
-                                        <div>
-                                            <p-select [options]="operators" [checkmark]="true" optionLabel="name" [showClear]="true" placeholder="Select Operator" />
+                                        <div class="w-[12rem]">
+                                            <p-select class="w-[11rem]" [options]="operators" [checkmark]="true" optionLabel="name" [showClear]="true" placeholder="Select Operator" />
                                         </div>
-                                        <div>
-                                            <input type="text" pInputText />
+                                        <div class="w-[12rem]">
+                                            <input class="w-[11rem]" type="text" pInputText />
                                         </div>
-                                        <div class="flex">
+                                        <div class="flex w-[4rem]">
                                             <p-button icon="pi pi-trash" severity="secondary" (click)="deleteRow(i)" />
                                             <p-button class="ml-1" icon="pi pi-bars" severity="secondary" (click)="pinRow(i)" />
                                         </div>
                                     </li>
                                     }
                                 </ul>
+                                } @else {
+                                <div class="flex flex-start p-2 font-sm font-bold">
+                                    No filter found, Please click add to add new filter.
+                                </div>
+                                }
                                 <div class="flex flex-start mt-4">
-                                    <p-button icon="pi pi-plus" severity="secondary" (click)="addFilter()" label="Add" />
+                                    <p-button icon="pi pi-plus" severity="secondary" (click)="addFilter()" label="Add" [disabled]="items.controls.length >= 5"/>
                                 </div>
                                 <div class="flex mt-2" style="flex-direction: row-reverse;">
                                     <p-button class="ml-4" severity="primary" (click)="applyAndSave()" label="Apply & Save" />
@@ -136,7 +141,7 @@ export class StatsWidget implements OnInit{
         this.filterForm = this.formBuilder.group({
             items: this.formBuilder.array([])
           });
-          this.addFilter();
+        this.addFilter();
     }
 
 
@@ -154,10 +159,22 @@ export class StatsWidget implements OnInit{
 
     apply() {
         console.log(this.filterForm.value);
+        if(this.filterForm.invalid) {
+            return false;
+        } else {
+            //Save Data
+            return true;
+        }
     }
 
     applyAndSave() {
         console.log(this.filterForm.value);
+        if(this.filterForm.invalid) {
+            return false;
+        } else {
+            //Save Data
+            return true;
+        }
     }
 
     deleteRow(index: number) {

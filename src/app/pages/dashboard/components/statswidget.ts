@@ -6,11 +6,12 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NumberOnlyDirective } from '../../../layout/directives/number-only.directive';
 
 @Component({
     standalone: true,
     selector: 'app-stats-widget',
-    imports: [Popover, InputGroupAddonModule, ButtonModule, InputTextModule, CommonModule, SelectModule, FormsModule, ReactiveFormsModule],
+    imports: [Popover, InputGroupAddonModule, ButtonModule, InputTextModule, CommonModule, SelectModule, FormsModule, ReactiveFormsModule, NumberOnlyDirective],
     template: `<div class="col-span-12 lg:col-span-6 xl:col-span-3">
             <div class="card mb-0">
                 <div class="flex justify-between mb-4">
@@ -68,7 +69,7 @@ import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Va
                                             <p-select class="w-[11rem]" [options]="operators" [checkmark]="true" optionLabel="name" [showClear]="true" placeholder="Select Operator" />
                                         </div>
                                         <div class="w-[12rem]">
-                                            <input class="w-[11rem]" type="text" pInputText />
+                                            <input class="w-[11rem]" type="text" pInputText appNumberOnly />
                                         </div>
                                         <div class="flex w-[4rem]">
                                             <p-button icon="pi pi-trash" severity="secondary" (click)="deleteRow(i)" />

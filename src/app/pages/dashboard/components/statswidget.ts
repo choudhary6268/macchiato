@@ -7,51 +7,29 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NumberOnlyDirective } from '../../../layout/directives/number-only.directive';
+import { buttonDesignTokens, selectDesignTokens } from '../../../layout/constants/primeng.constants';
+import { ChipModule } from 'primeng/chip';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
     standalone: true,
     selector: 'app-stats-widget',
-    imports: [Popover, InputGroupAddonModule, ButtonModule, InputTextModule, CommonModule, SelectModule, FormsModule, ReactiveFormsModule, NumberOnlyDirective],
-    template: `<div class="col-span-12 lg:col-span-6 xl:col-span-3">
+    imports: [Popover, InputGroupAddonModule, ButtonModule, InputTextModule, CommonModule, SelectModule, FormsModule, ReactiveFormsModule, NumberOnlyDirective, ChipModule, DatePicker],
+    template: `
+        <div class="col-span-12 lg:col-span-6 xl:col-span-9">
             <div class="card mb-0">
                 <div class="flex justify-between mb-4">
-                    <div>
-                        <span class="block text-muted-color font-medium mb-4">Orders</span>
-                        <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">152</div>
-                    </div>
-                    <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-shopping-cart text-blue-500 !text-xl"></i>
-                    </div>
-                </div>
-                <span class="text-primary font-medium">24 new </span>
-                <span class="text-muted-color">since last visit</span>
-            </div>
-        </div>
-        <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-            <div class="card mb-0">
-                <div class="flex justify-between mb-4">
-                    <div>
-                    <span class="block text-muted-color font-medium mb-4">Revenue</span>
-                        <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">$2.100</div>
-                    </div>
-                    <div class="flex items-center justify-center bg-orange-100 dark:bg-orange-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-dollar text-orange-500 !text-xl"></i>
-                    </div>
-                </div>
-                <span class="text-primary font-medium">%52+ </span>
-                <span class="text-muted-color">since last week</span>
-            </div>
-        </div>
-        <div class="col-span-12 lg:col-span-6 xl:col-span-3">
-            <div class="card mb-0">
-                <div class="flex justify-between mb-4">
-                    <div>
-                        <span class="block text-muted-color font-medium mb-4">Customers</span>
-                        <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">28441</div>
-                    </div>
+                <div class="card flex items-center gap-2 flex-wrap">
+                    @if(items.controls.length) {
+                        @for(filter of items.controls; track filter; let i = $index;) {
+                            <p-chip [label]="filter.get('propertyType')?.value"  [removable]="true" />
+                        }
+                    }
                     <div (click)="filterPopover.toggle($event)" class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
-                        <i class="pi pi-users text-cyan-500 !text-xl"></i>
+                        <i class="pi pi-plus text-cyan-500 !text-xl"></i>
                     </div>
+                </div>
+
                     <p-popover #filterPopover>
                         <div class="flex flex-col gap-4 w-[42rem]" [formGroup]="filterForm">
                             <div>
@@ -63,13 +41,14 @@ import { NumberOnlyDirective } from '../../../layout/directives/number-only.dire
                                     @for(filter of items.controls; track filter; let i = $index;) {
                                     <li class="flex items-center gap-1 justify-content" [formGroupName]="i">
                                         <div class="w-[12rem]">
-                                            <p-select class="w-[11rem]" [options]="propertyTypes" [checkmark]="true" optionLabel="name" [showClear]="true" placeholder="Select Property"/>
+                                            <p-select [dt]="selectDT"  class="w-[11rem]" [options]="propertyTypes" [checkmark]="true" optionLabel="name" [showClear]="true" placeholder="Select Property"/>
                                         </div>
                                         <div class="w-[12rem]">
-                                            <p-select class="w-[11rem]" [options]="operators" [checkmark]="true" optionLabel="name" [showClear]="true" placeholder="Select Operator" />
+                                            <p-select [dt]="selectDT"  class="w-[11rem]" [options]="operators" [checkmark]="true" optionLabel="name" [showClear]="true" placeholder="Select Operator" />
                                         </div>
                                         <div class="w-[12rem]">
-                                            <input class="w-[11rem]" type="text" pInputText appNumberOnly />
+                                            <p-datepicker inputId="calendar-24h" [showTime]="true" />
+                                            <!-- <input class="w-[11rem]" type="text" pInputText appNumberOnly /> -->
                                         </div>
                                         <div class="flex w-[4rem]">
                                             <p-button icon="pi pi-trash" severity="secondary" (click)="deleteRow(i)" />
@@ -84,12 +63,12 @@ import { NumberOnlyDirective } from '../../../layout/directives/number-only.dire
                                 </div>
                                 }
                                 <div class="flex flex-start mt-4">
-                                    <p-button icon="pi pi-plus" severity="secondary" (click)="addFilter()" label="Add" [disabled]="items.controls.length >= 5"/>
+                                    <p-button [dt]="bDesignTokens" icon="pi pi-plus" severity="secondary" (click)="addFilter()" label="Add" [disabled]="items.controls.length >= 5"/>
                                 </div>
                                 <div class="flex mt-2" style="flex-direction: row-reverse;">
-                                    <p-button class="ml-4" severity="primary" (click)="applyAndSave()" label="Apply & Save" />
+                                    <p-button [dt]="bDesignTokens" class="ml-4" severity="primary" (click)="applyAndSave()" label="Apply & Save" />
 
-                                    <p-button severity="primary" (click)="apply()" label="Apply" />
+                                    <p-button [dt]="bDesignTokens" severity="primary" (click)="apply()" label="Apply" />
                                 </div>
                             </form>
                         </div>
@@ -116,6 +95,8 @@ import { NumberOnlyDirective } from '../../../layout/directives/number-only.dire
         </div>`
 })
 export class StatsWidget implements OnInit{
+    bDesignTokens: any = buttonDesignTokens;
+    selectDT: any = selectDesignTokens;
     filterForm: any;
     propertyTypes: any[] = [
         { name: 'Price', value: 'price'},
@@ -188,5 +169,11 @@ export class StatsWidget implements OnInit{
 
     get items(): FormArray {
         return this.filterForm.get('items') as FormArray;
+    }
+
+    get chips() {
+        return this.items.getRawValue().filter((filterValue: any) => filterValue.name && filterValue.value && filterValue.operator).map((filterValue: any) => {
+            return `${filterValue.name}-${filterValue.operator}-${filterValue.value}`;
+        });
     }
 }
